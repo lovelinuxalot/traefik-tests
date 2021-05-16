@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-prod
+  namespace: prod
+spec:
+  ports:
+    - protocol: TCP
+      name: backend-web
+      port: 80
+  selector:
+    app: backend-prod
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend-svc
+  namespace: prod
+  labels:
+    app: backend-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-prod
+  template:
+    metadata:
+      labels:
+        app: backend-prod
+    spec:
+      containers:
+        - name: backend
+          image: httpd
+          ports:
+            - name: backend-web
+              containerPort: 80

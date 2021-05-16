@@ -1,0 +1,35 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: frontend-test
+  namespace: test
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`test-frontend.mydomain.com`)
+    kind: Rule
+    services:
+    - name: frontend-test
+      port: 80
+  tls:
+    certResolver: stageresolver
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: backend-test
+  namespace: test
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`test-backend.mydomain.com`)
+    kind: Rule
+    services:
+    - name: backend-test
+      port: 80
+  tls:
+    certResolver: stageresolver
+

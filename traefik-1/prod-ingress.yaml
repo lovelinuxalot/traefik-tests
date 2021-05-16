@@ -1,0 +1,34 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: frontend-prod
+  namespace: prod
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`prod-frontend.mydomain.com`)
+    kind: Rule
+    services:
+    - name: frontend-prod
+      port: 80
+  tls:
+    certResolver: prodresolver
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: backend-prod
+  namespace: prod
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`prod-backend.mydomain.com`)
+    kind: Rule
+    services:
+    - name: backend-prod
+      port: 80
+  tls:
+    certResolver: prodresolver
